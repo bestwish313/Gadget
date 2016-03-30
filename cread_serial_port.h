@@ -6,12 +6,17 @@
 #include <QMainWindow>
 #include <QObject>
 #include <QWidget>
+#include <QTextStream>
+#include <QTimer>
 
+QT_USE_NAMESPACE
 
-class CREAD_SERIAL_PORT
+class CREAD_SERIAL_PORT : public QObject
 {
+    Q_OBJECT;
+
 public:
-    CREAD_SERIAL_PORT(const QString &, const QString &, const QString &, const QString &, const QString &, const QString &);
+    CREAD_SERIAL_PORT(const QString &, const QString &, const QString &, const QString &, const QString &, const QString &, QObject *parent = 0);
 
     struct Settings {
         QString name;
@@ -27,11 +32,18 @@ public:
         QString stringFlowControl;
         bool localEchoEnabled;
     };
+
     QSerialPort *serial;
-    Settings currentSettings;
 
     void connectPort();
     void readData();
+
+private:
+    Settings currentSettings;
+
+    QByteArray  m_readData;
+    QTextStream m_standardOutput;
+    QTimer      m_timer;
 };
 
 #endif // CREAD_SERIAL_PORT_H

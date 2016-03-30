@@ -82,6 +82,7 @@ int main(int argc, char *argv[])
         QString flow = "None";
         QString parity = "None";
         QString log = "";
+        QString msgId = "all";
 
         if (!parser.isSet(portOption) ||
              parser.value(portOption).contains("-") || parser.value(portOption).contains("--") ||
@@ -119,10 +120,11 @@ int main(int argc, char *argv[])
                 log = parser.value(logOption);
             }
             if (parser.isSet(messageAllOption)) {
-
+                msgId = "all";
             }
 
             CREAD_SERIAL_PORT *cReadSerialPort = new CREAD_SERIAL_PORT(port, baud, data, parity, stop, flow);
+            cReadSerialPort->readData();
         }
     }
     else
